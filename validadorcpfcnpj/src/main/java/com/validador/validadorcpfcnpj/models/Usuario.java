@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +26,8 @@ public class Usuario implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@Column(name = "id_usuario")
+	private long idUsuario;
 	
 	@NotNull
 	private String nmUsuario;
@@ -33,15 +36,10 @@ public class Usuario implements Serializable {
 	private String senha; 
 	
 	@JsonIgnore
+	@Cascade({org.hibernate.annotations.CascadeType.REMOVE, org.hibernate.annotations.CascadeType.PERSIST})
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Requisicoes> requisicoesUsuario = new ArrayList<>();
 	
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getSenha() {
 		return senha;
@@ -60,8 +58,7 @@ public class Usuario implements Serializable {
 		this.nmUsuario = nmUsuario;
 	}
 
-	@Cascade({org.hibernate.annotations.CascadeType.DELETE, org.hibernate.annotations.CascadeType.PERSIST})
-	@OneToMany(mappedBy = "usuarioRequisicao")
+
 	public List<Requisicoes> getRequisicoesUsuario() {
 		return requisicoesUsuario;
 	}

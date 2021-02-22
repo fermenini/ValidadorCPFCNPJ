@@ -19,9 +19,11 @@ public class Requisicoes {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private long idRequisicao;
 
 	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_usuario_requisicao", referencedColumnName = "id_usuario")
 	private Usuario usuarioRequisicao; 
 	
 	@NotNull
@@ -30,16 +32,7 @@ public class Requisicoes {
 	
 	private String valorValidar;
 	
-	public long getId() {
-		return id;
-	}
 	
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	@ManyToOne
-	@JoinColumn(name = "id_usuario", referencedColumnName = "id")
 	public Usuario getUsuarioRequisicao() {
 		return usuarioRequisicao;
 	}
